@@ -1,4 +1,42 @@
 Rails.application.routes.draw do
+  # Routes for the Wallet resource:
+
+  # CREATE
+  post("/insert_wallet", { :controller => "wallets", :action => "create" })
+          
+  # READ
+  get("/wallets", { :controller => "wallets", :action => "index" })
+  
+  get("/wallets/:path_id", { :controller => "wallets", :action => "show" })
+  
+  # UPDATE
+  
+  post("/modify_wallet/:path_id", { :controller => "wallets", :action => "update" })
+  
+  # DELETE
+  get("/delete_wallet/:path_id", { :controller => "wallets", :action => "destroy" })
+
+  #------------------------------
+
+  # Routes for the Director resource:
+
+  # CREATE
+  post("/insert_director", { :controller => "directors", :action => "create" })
+          
+  # READ
+  get("/directors", { :controller => "directors", :action => "index" })
+  
+  get("/directors/:path_id", { :controller => "directors", :action => "show" })
+  
+  # UPDATE
+  
+  post("/modify_director/:path_id", { :controller => "directors", :action => "update" })
+  
+  # DELETE
+  get("/delete_director/:path_id", { :controller => "directors", :action => "destroy" })
+
+  #------------------------------
+
   # Routes for the User account:
 
   # SIGN UP FORM
@@ -27,6 +65,9 @@ Rails.application.routes.draw do
   #------------------------------
 
   get("/", {:controller => "application", :action => "home"})
+  
+
+  get("/user/:user_id", {:controller => "wallets", :action => "watchlist"})
 
   get("/wallet/:address", {:controller => "application", :action => "get_wallet"})
 

@@ -1,0 +1,101 @@
+<div>
+  <div>
+    <h1>
+      Wallet #<%= @the_wallet.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/wallets">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_wallet/<%= @the_wallet.id %>">
+          Delete wallet
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Address
+      </dt>
+      <dd>
+        <%= @the_wallet.address %>
+      </dd>
+
+      <dt>
+        User
+      </dt>
+      <dd>
+        <%= @the_wallet.user_id %>
+      </dd>
+
+      <dt>
+        Balance
+      </dt>
+      <dd>
+        <%= @the_wallet.balance %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_wallet.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_wallet.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit wallet
+    </h2>
+
+    <form action="/modify_wallet/<%= @the_wallet.id %>"  method="post" >
+      <div>
+        <label for="address_box">
+          Address
+        </label>
+
+        <input type="text" id="address_box" name="query_address" value="<%= @the_wallet.address %>">
+      </div>
+
+      <div>
+        <label for="user_id_box">
+          User
+        </label>
+
+        <input type="text" id="user_id_box" name="query_user_id" value="<%= @the_wallet.user_id %>">
+      </div>
+
+      <div>
+        <label for="balance_box">
+          Balance
+        </label>
+
+        <input type="text" id="balance_box" name="query_balance" value="<%= @the_wallet.balance %>">
+      </div>
+
+      <button>
+        Update wallet
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>

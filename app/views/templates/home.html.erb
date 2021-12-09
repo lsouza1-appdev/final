@@ -1,16 +1,42 @@
-<a href="/user_sign_up">Sign Up</a>
 <hr>
-<a href="/user_sign_in">Sign In</a>
-<hr>
-<a href = "/user_sign_out">Sign Out</a>
-<hr>
-<a href = "/user/#{session.fetch(:user_id)}">My Wallets</a>
-
-<h3><%= session.fetch(:user_id) %></h3>
 
 <% if session.fetch(:user_id)%>
-    <h2>test</h2>
+    
+    <a href="/user_sign_out">Sign out</a>
+    <hr>
+    <a href = "/user/#{session.fetch(:user_id)}">My Wallets</a>
+    <hr>
+    <h3>Welcome user: <%= session.fetch(:user_id) %></h3>
 
+    
+<div>
+    <h2>
+      Add a new wallet
+    </h2>
+
+    <form action="/insert_wallet" method="post">
+      <div>
+        <label for="address_box">
+          Address
+        </label>
+
+        <input type="text" id="address_box" name="query_address">
+      </div>
+
+      <button>
+        Track wallet
+      </button>
+    </form>
+  </div>
+
+
+<%else%>
+    <a href="/user_sign_up">Sign Up</a>
+    <hr>
+    <a href="/user_sign_in">Sign In</a>
 <%end %>
+<hr>
 
-<h1>Testing</h1>
+
+
+
