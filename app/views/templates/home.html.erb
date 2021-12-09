@@ -1,0 +1,16 @@
+<a href="/user_sign_up">Sign Up</a>
+<hr>
+<a href="/user_sign_in">Sign In</a>
+<hr>
+<a href = "/user_sign_out">Sign Out</a>
+<hr>
+<a href = "/user/#{session.fetch(:user_id)}">My Wallets</a>
+
+<h3><%= session.fetch(:user_id) %></h3>
+
+<% if session.fetch(:user_id)%>
+    <h2>test</h2>
+
+<%end %>
+
+<h1>Testing</h1>
