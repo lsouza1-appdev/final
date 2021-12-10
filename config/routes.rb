@@ -11,29 +11,19 @@ Rails.application.routes.draw do
   
   # UPDATE
   
-  post("/modify_wallet/:path_id", { :controller => "wallets", :action => "update" })
+  #post("/modify_wallet/:path_id", { :controller => "wallets", :action => "update" })
   
   # DELETE
   get("/delete_wallet/:path_id", { :controller => "wallets", :action => "destroy" })
 
-  #------------------------------
-
-  # Routes for the Director resource:
-
-  # CREATE
-  post("/insert_director", { :controller => "directors", :action => "create" })
-          
-  # READ
-  get("/directors", { :controller => "directors", :action => "index" })
-  
-  get("/directors/:path_id", { :controller => "directors", :action => "show" })
-  
   # UPDATE
   
-  post("/modify_director/:path_id", { :controller => "directors", :action => "update" })
+  
+  #
+  patch("/update/:path_id", { :controller => "wallets", :action => "update"})
   
   # DELETE
-  get("/delete_director/:path_id", { :controller => "directors", :action => "destroy" })
+  delete("/delete_wallet/:id", { :controller => "wallets", :action => "destroy" })
 
   #------------------------------
 
@@ -66,8 +56,8 @@ Rails.application.routes.draw do
 
   get("/", {:controller => "application", :action => "home"})
   
+  get("/refresh_prices", {:controller => "application", :action => "update_prices"})
 
-  get("/user/:user_id", {:controller => "wallets", :action => "watchlist"})
 
   get("/wallet/:address", {:controller => "application", :action => "get_wallet"})
 

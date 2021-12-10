@@ -20,13 +20,14 @@ class WalletsController < ApplicationController
   def create
     the_wallet = Wallet.new
     the_wallet.address = params.fetch("query_address")
+    the_wallet.nickname = params.fetch("query_nickname")
     the_wallet.user_id = session.fetch(:user_id)
    
     address = params.fetch("query_address")
-    url = "https://api.etherscan.io/api?module=account&action=balance&address=#{@address}&tag=latest&apikey=6VHX7KNJWUI1XBXB8D562B4VCGJGMNZMDH"
+    url = "https://api.etherscan.io/api?module=account&action=balance&address=#{address}&tag=latest&apikey=6VHX7KNJWUI1XBXB8D562B4VCGJGMNZMDH"
     raw_response = open(url).read
     parsed_response = JSON.parse(raw_response)
-    balance = @parsed_response.fetch("result")
+    balance = (parsed_response.fetch("result").to_f / 10**18).round(4)
 
     the_wallet.balance = balance
     
@@ -34,15 +35,15 @@ class WalletsController < ApplicationController
 
     raw_response2 = open(url2).read
     parsed_response2 = JSON.parse(raw_response2)
-    value = @parsed_response.fetch("result") * balance 
+    value = (parsed_response2.fetch("USD") * balance).round(2) 
 
-    the_wallet.balance = balance
-
+    the_wallet.value = value
+    @list_of_wallets = Wallet.all
     if the_wallet.valid?
       the_wallet.save
-      redirect_to("/wallets", { :notice => "Wallet created successfully." })
+      redirect_to("/", { :notice => "Wallet track successfull." })
     else
-      redirect_to("/wallets", { :notice => "Wallet failed to create successfully." })
+      redirect_to("/", { :notice => "Wallet track failed to create successfully." })
     end
   end
 
@@ -50,25 +51,34 @@ class WalletsController < ApplicationController
     the_id = params.fetch("path_id")
     the_wallet = Wallet.where({ :id => the_id }).at(0)
 
-    the_wallet.address = params.fetch("query_address")
-    the_wallet.user_id = params.fetch("query_user_id")
-    the_wallet.balance = params.fetch("query_balance")
+    address = the_wallet.address
+    
+    url = "https://api.etherscan.io/api?module=account&action=balance&address=#{address}&tag=latest&apikey=6VHX7KNJWUI1XBXB8D562B4VCGJGMNZMDH"
+    raw_response = open(url).read
+    parsed_response = JSON.parse(raw_response)
+    balance = (parsed_response.fetch("result").to_f / 10**18).round(4)
 
-    if the_wallet.valid?
-      the_wallet.save
-      redirect_to("/wallets/#{the_wallet.id}", { :notice => "Wallet updated successfully."} )
-    else
-      redirect_to("/wallets/#{the_wallet.id}", { :alert => "Wallet failed to update successfully." })
-    end
+    the_wallet.balance = balance
+    
+    url2 = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
+
+    raw_response2 = open(url2).read
+    parsed_response2 = JSON.parse(raw_response2)
+    value = (parsed_response2.fetch("USD") * balance).round(2) 
+
+    the_wallet.value = value
+    the_wallet.save
+    
   end
 
   def destroy
-    the_id = params.fetch("path_id")
+    
+    the_id = params.fetch(:id)
     the_wallet = Wallet.where({ :id => the_id }).at(0)
 
     the_wallet.destroy
 
-    redirect_to("/wallets", { :notice => "Wallet deleted successfully."} )
+    redirect_to("/", { :notice => "Wallet deleted successfully."} )
   end
 
   def watchlist

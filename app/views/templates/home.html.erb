@@ -4,8 +4,6 @@
     
     <a href="/user_sign_out">Sign out</a>
     <hr>
-    <a href = "/user/#{session.fetch(:user_id)}">My Wallets</a>
-    <hr>
     <h3>Welcome user: <%= session.fetch(:user_id) %></h3>
 
     
@@ -22,6 +20,13 @@
 
         <input type="text" id="address_box" name="query_address">
       </div>
+      <div>
+        <label for="nickname_box">
+          Nickname
+        </label>
+
+        <input type="text" id="nickname_box" name="query_nickname">
+      </div>
 
       <button>
         Track wallet
@@ -37,6 +42,135 @@
 <%end %>
 <hr>
 
+<% if session.fetch(:user_id)%>
+<h2>Your Watchlist</h2>
+<div>
+<a href= "/refresh_prices">Refresh Prices</a>
+</div>
+<table border = "1">
+      <tr>
+        <th>
+          Address
+        </th>
+
+        <th>
+          Nickname
+        </th>
+
+        <th>
+          Balance
+        </th>
+
+        <th>
+          Value
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+      </tr>
+
+      
+
+
+<% Wallet.where({:user_id => session.fetch(:user_id)}).all.each do |a_wallet| %>
+      <tr>
+        <td>
+          <%= a_wallet.address %>
+        </td>
+
+        <td>
+          <%= a_wallet.nickname %>
+        </td>
+
+        <td>
+          <%= a_wallet.balance %>eth
+        </td>
+
+        <td>
+          $<%= a_wallet.value %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_wallet.updated_at) %> ago
+        </td> 
+
+        
+        <td>
+        <%= button_to "delete", {:controller => :wallets,
+      :action => 'destroy', :id => a_wallet.id }, :method => :delete %>
+        </td>
+        
+      </tr>
+      <% end %>
+</table>
+<%end%>
 
 
 
+<hr>
+<h2>All Tracked Wallets</h2>
+ <table border = "1">
+      <tr>
+        <th>
+          Address
+        </th>
+
+        <th>
+          Nickname
+        </th>
+
+        <th>
+          Tracked by
+        </th>
+
+        <th>
+          Balance
+        </th>
+
+        <th>
+          Value
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        
+      </tr>
+
+      
+
+
+<% Wallet.all.each do |a_wallet| %>
+      <tr>
+        <td>
+          <%= a_wallet.address %>
+        </td>
+
+        <td>
+          <%= a_wallet.nickname %>
+        </td>
+
+        <td>
+          <%= a_wallet.user_id %>
+        </td>
+
+        <td>
+          <%= a_wallet.balance %>eth
+        </td>
+
+        <td>
+          $<%= a_wallet.value %>
+        </td>
+
+        
+        <td>
+          <%= time_ago_in_words(a_wallet.updated_at) %> ago
+        </td>
+
+        
+      </tr>
+      <% end %>
+</table>
